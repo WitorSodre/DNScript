@@ -1,6 +1,8 @@
 #!/bin/bash   
 
-date > /home/witor/Documentos/logbusca.txt
+
+date > /home/witor/Documentos/logbusca.log
+# Declaração das variáveis de dominio que serão usadas nas Funções 
 data=$(date)
 dominio1=google.com.br
 dominio2=yahoo.com.br
@@ -8,11 +10,14 @@ dominio3=twitter.com
 dominio4=clicksign.com.br
 dominio5=twitch.tv
 
-
+#Variavel onde será armazenados os dados da APi do telegram
 id_grupo=-
 chave_bot=
 
+#Declaração do Tempo em que a função irá esperar resposta 
 timeout=2
+
+# variaveis De consulta dos DNS.
 ip=(
 186.211.32.10
 200.202.111.10
@@ -28,13 +33,14 @@ ip=(
 200.202.111.98
 )
 
+# Função denominada teste que vai do 1 ao 5, onde será testado cada DNS nos dominios armazenados, também Utilizado a estrutura condicional para o envio de mensagem através do Curl caso a verificação não tenha resposta.
          function testedns1 {
                 
 
-                timeout $timeout timeout $timeout dig "@"$dns "$dominio1"
+                timeout $timeout dig "@"$dns "$dominio1"
 
                         if [ $? -eq 0 ]; then
-                                echo -e " $dominio1 $erro1 "$v1" $dns \n$data\n" >> /home/witor/Documentos/logbusca.txt
+                                echo -e " $dominio1 $erro1 "$v1" $dns \n$data\n" >> /home/witor/Documentos/logbusca.log
                                 
          
                          else 
@@ -55,7 +61,7 @@ TEMPO DE RESPOSTA: $t1⌛️
                  timeout $timeout dig "@"$dns "$dominio2"
          
                         if [ $? -eq 0 ]; then
-                                echo -e " $dominio2 $erro2 "$v2" $dns \n$data\n" >> /home/witor/Documentos/logbusca.txt
+                                echo -e " $dominio2 $erro2 "$v2" $dns \n$data\n" >> /home/witor/Documentos/logbusca.log
                             
          
                          else 
@@ -77,7 +83,7 @@ TEMPO DE RESPOSTA: $t2⌛️
                timeout $timeout dig "@"$dns "$dominio3"
          
                         if [ $? -eq 0 ]; then
-                                echo -e " $dominio3 $erro3 "$v3" $dns \n$data\n" >> /home/witor/Documentos/logbusca.txt
+                                echo -e " $dominio3 $erro3 "$v3" $dns \n$data\n" >> /home/witor/Documentos/logbusca.log
                               
          
                          else 
@@ -99,7 +105,7 @@ TEMPO DE RESPOSTA: $t3⌛️
                 timeout $timeout dig "@"$dns "$dominio4"
          
                         if [ $? -eq 0 ]; then
-                                echo -e " $dominio4 $erro4 "$v4" $dns \n$data\n" >> /home/witor/Documentos/logbusca.txt
+                                echo -e " $dominio4 $erro4 "$v4" $dns \n$data\n" >> /home/witor/Documentos/logbusca.log
                               
          
                          else 
@@ -121,7 +127,7 @@ TEMPO DE RESPOSTA: $t4⌛️
                timeout $timeout dig "@"$dns "$dominio5"
          
                         if [ $? -eq 0 ]; then
-                                echo -e " $dominio5 $erro5 "$v5" $dns \n$data\n" >> /home/witor/Documentos/logbusca.txt
+                                echo -e " $dominio5 $erro5 "$v5" $dns \n$data\n" >> /home/witor/Documentos/logbusca.log
                                 
          
                          else 
@@ -138,7 +144,7 @@ TEMPO DE RESPOSTA: $t5⌛️
                 
  }                                                                                                 
                                                                                                  
-
+# Laço de repetição, criado para chamar as Funções e Coleta de Informações através do nslokup armazenados na variáve: erro, v e t.
 
 for dns in "${ip[@]}" ; do
         erro1=$(nslookup $dns | grep -o 'name = .*' | awk '{print $3}' | awk -F. '{print $1}')
@@ -168,8 +174,8 @@ done
 
 
 
-
-resposta=$(grep "SERVFAIL" /home/witor/Documentos/logbusca.txt | awk -F, '{print $1}')  
+# Final do código, onde será realizado uma consulta no arquivo de log procurando erros de resposta de todo o script  
+resposta=$(grep "SERVFAIL" /home/witor/Documentos/logbusca.log | awk -F, '{print $1}')  
      if [ -n "$resposta" ]; then 
      curl -s -X POST https://api.telegram.org/bot$chave_bot/sendMessage? -d chat_id=$id_grupo -d text="                                                         
 ⚠️ ALERTA: SITE SEM RESPOSTA ⚠️       🖥                  
