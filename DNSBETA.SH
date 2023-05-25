@@ -144,7 +144,7 @@ TEMPO DE RESPOSTA: $t5⌛️
                 
  }                                                                                                 
                                                                                                  
-# Laço de repetição, criado para chamar as Funções e Coleta de Informações através do nslokup armazenados na variáve: erro, v e t.
+# Laço de repetição, criado para chamar as Funções e Coleta de Informações através do nslokup armazenados na variáve: erro, v e t, sendo assim utiliadas nas funções onde será testado cada domínio.
 
 for dns in "${ip[@]}" ; do
         erro1=$(nslookup $dns | grep -o 'name = .*' | awk '{print $3}' | awk -F. '{print $1}')
