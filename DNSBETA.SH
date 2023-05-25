@@ -17,20 +17,9 @@ chave_bot=
 #Declaração do Tempo em que a função irá esperar resposta 
 timeout=2
 
-# variaveis De consulta dos DNS.
+# variaveis De consulta dos DNS, pelos endereços de IPS 
 ip=(
-186.211.32.10
-200.202.111.10
-186.211.32.11
-200.202.111.11
-186.211.32.12
-200.202.111.12
-186.211.32.58
-186.211.32.98
-186.211.32.59
-186.211.32.56
-200.202.111.58
-200.202.111.98
+
 )
 
 # Função denominada teste que vai do 1 ao 5, onde será testado cada DNS nos dominios armazenados, também Utilizado a estrutura condicional para o envio de mensagem através do Curl caso a verificação não tenha resposta.
